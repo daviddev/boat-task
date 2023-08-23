@@ -10,11 +10,13 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('boat_images', function (Blueprint $table) {
             $table->id();
-            $table->string('email')->unique();
-            $table->string('stripe_id')->nullable()->index();
+            $table->unsignedBigInteger('boat_id')->index();
+            $table->string('url');
             $table->timestamps();
+
+            $table->foreign('boat_id')->references('id')->on('boats')->cascadeOnDelete();
         });
     }
 
@@ -23,6 +25,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('boat_images');
     }
 };

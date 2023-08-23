@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\StripeController;
+use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,5 +16,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return Inertia::render('Index');
 });
+Route::get('/show/{id}', function ($id) {
+    return Inertia::render('Show', ['id' => $id]);
+});
+Route::get('charge-checkout/{boat}', [StripeController::class, 'chargeCheckout']);
