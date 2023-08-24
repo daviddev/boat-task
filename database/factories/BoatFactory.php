@@ -18,7 +18,7 @@ class BoatFactory extends Factory
         return [
             'boat_model_id' => BoatModel::inRandomOrder()->first()->id,
             'title' => rtrim(fake()->text(rand(8, 21)),'.'),
-            'price' => fake()->numberBetween(800, 4000) * 10,
+            'price' => fake()->numberBetween(400, 3000) * 1000,
             'condition' => Boat::getConditions()[array_rand(Boat::getConditions())],
             'description' => fake()->text(rand(200, 400)),
             'year' => fake()->numberBetween(2000, now()->year),

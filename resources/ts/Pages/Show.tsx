@@ -2,11 +2,16 @@ import React, {useEffect, useState} from 'react';
 import {fetchBoat} from "../api";
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
+import Slide from '@mui/material/Slide';
 import Button from "@mui/material/Button";
+import Dialog from '@mui/material/Dialog';
 import Preloader from "../components/Preloader";
 import {Carousel} from 'react-responsive-carousel';
 import {Container, TextField} from "@mui/material";
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogActions from '@mui/material/DialogActions';
 import {$DisplayMoney, $ValidateEmail} from "../helpers";
+import {TransitionProps} from '@mui/material/transitions';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 
 const popup_style = {
@@ -21,11 +26,27 @@ const popup_style = {
     p: 4
 };
 
+const Transition = React.forwardRef(function Transition(
+    props: TransitionProps & { children: React.ReactElement<any, any>},
+    ref: React.Ref<unknown>
+) {
+    return <Slide direction="up" ref={ref} {...props} />;
+});
+
 const Show = React.FC = ({id}) => {
+    const params = new URLSearchParams(window.location.search);
+
     const [loading, setLoading] = useState(true);
+    const [dialog, setDialog] = useState(false);
     const [popup, setPopup] = useState(false);
     const [email, setEmail] = useState('');
     const [boat, setBoat] = useState(null);
+
+    useEffect(() => {
+        if (params.get('payment-status') === 'done') {
+            setDialog(true);
+        }
+    }, []);
 
     useEffect(() => {
         fetchBoat(id).then(boat => {
@@ -40,6 +61,18 @@ const Show = React.FC = ({id}) => {
     };
 
     return loading ? <Preloader/> : <main className="show-screen">
+        <Dialog
+            aria-describedby="alert-dialog-slide-description"
+            onClose={() => setDialog(false)}
+            TransitionComponent={Transition}
+            open={dialog}
+            keepMounted
+        >
+            <DialogTitle>Payment successfully done!</DialogTitle>
+            <DialogActions>
+                <Button onClick={() => setDialog(false)}>Close</Button>
+            </DialogActions>
+        </Dialog>
         <Modal
             open={popup}
             onClose={() => setPopup(false)}

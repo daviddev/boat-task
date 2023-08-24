@@ -44,8 +44,8 @@ class StripeController extends Controller
             );
         }
 
-        return $user->checkoutCharge($boat->price * 100, 'Boat Product', 1, [
-            'success_url' => url("/show/{$boat->id}"),
+        return $user->checkoutCharge($boat->getRawOriginal('price'), 'Boat Product', 1, [
+            'success_url' => url("/show/{$boat->id}?payment-status=done"),
             'cancel_url' => url("/show/{$boat->id}"),
         ]);
     }

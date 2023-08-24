@@ -14,11 +14,16 @@ class BoatSeeder extends Seeder
     public function run(): void
     {
         Boat::factory(100)->create()->each(
-            fn($item) => $item->images()->saveMany(
-                BoatImage::factory(rand(2, 3))->make([
-                    'url' => fake()->imageUrl(640, 400, "Boat {$item->id}", null, 'Image')
-                ])
-            )
+            function ($item) {
+                $count = rand(2, 5);
+                for ($i = 1; $i <= $count; $i++) {
+                    $item->images()->save(
+                        BoatImage::factory()->make([
+                            'url' => fake()->imageUrl(640, 400, "Boat {$item->id}", null, "Image {$i}")
+                        ])
+                    );
+                }
+            }
         );
     }
 }
