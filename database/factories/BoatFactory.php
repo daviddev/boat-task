@@ -20,7 +20,7 @@ class BoatFactory extends Factory
             'title' => rtrim(fake()->text(rand(8, 21)),'.'),
             'price' => fake()->numberBetween(400, 3000) * 1000,
             'condition' => Boat::getConditions()[array_rand(Boat::getConditions())],
-            'description' => fake()->text(rand(200, 400)),
+            'description' => fake()->text(rand(600, 1200)),
             'year' => fake()->numberBetween(2000, now()->year),
             'length' => fake()->randomFloat(99, 3, 9),
             'beam' => fake()->randomFloat(99, 1, 3),
